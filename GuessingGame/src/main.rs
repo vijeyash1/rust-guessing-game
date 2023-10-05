@@ -7,9 +7,12 @@ fn main() {
         let mut guess = String::new();
         io::stdin()
             .read_line(&mut guess)
-            .expect("Failed to read the line");
+            .expect("Unable to read the input");
 
-        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
         let secret_number = rand::thread_rng().gen_range(1..=100);
         match guess.cmp(&secret_number) {
@@ -21,6 +24,7 @@ fn main() {
             }
             Ordering::Equal => {
                 println!("You Won");
+                break;
             }
         }
     }
